@@ -1,0 +1,11 @@
+[project]
+name = "ploutos"
+version = "0.1.0"
+description = "Personal finance manager agents"
+readme = "README.md"
+requires-python = ">=3.11,<3.15"
+dependencies = [
+    "fastapi[standard-no-fastapi-cloud-cli]~=0.139.0",
+    "httpx~=0.28.1",
+    "pydantic-settings~=2.14.2",
+]
