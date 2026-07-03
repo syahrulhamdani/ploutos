@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ploutos
+      POSTGRES_PASSWORD: ploutos
+      POSTGRES_DB: ploutos
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ploutos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks: [ploutos-net]
+
+  migrate:
+    build:
+      context: .
+      target: migrate
+    env_file: .env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [ploutos-net]
+    restart: "no"
+
+  app:
+    build:
+      context: .
+      target: runtime
+    env_file: .env.docker
+    ports:
+      - "${APP_PORT:-8000}:${APP_PORT:-8000}"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    networks: [ploutos-net]
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+
+volumes:
+  pgdata:
+
+networks:
+  ploutos-net:
+    driver: bridge

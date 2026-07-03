@@ -1,0 +1,13 @@
+.venv/
+.git/
+.env
+.env.*
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+tests/
+.python-version
+*.db
+README.md
+LICENSE
