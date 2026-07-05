@@ -9,6 +9,7 @@ from alembic import context
 
 from ploutos.core.config import settings
 import ploutos.models.user  # noqa: F401 — ensures models are registered on SQLModel.metadata
+import ploutos.models.transaction  # noqa: F401 — ensures models are registered on SQLModel.metadata
 
 config = context.config
 
